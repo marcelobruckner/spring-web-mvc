@@ -1,25 +1,26 @@
 package br.com.globallabs.springmvc.repository;
 
-import br.com.globallabs.springmvc.model.Jedi;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import br.com.globallabs.springmvc.model.Jedi;
 
 @Repository
 public class JediRepository {
 
-    private List<Jedi> allJedi;
+    private List<Jedi> jedi;
 
     public JediRepository() {
-        allJedi = new ArrayList<>();
+        jedi = new ArrayList<>();
     }
 
-    public List<Jedi> getAllJedi(){
-        return allJedi;
+    public List<Jedi> getAll() {
+        return jedi;
     }
 
-    public void add(Jedi jedi) {
-        allJedi.add(jedi);
+    public void add(final Jedi jedi) {
+       this.jedi.add(jedi);
     }
 }
