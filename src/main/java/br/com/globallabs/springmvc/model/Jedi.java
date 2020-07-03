@@ -1,16 +1,24 @@
 package br.com.globallabs.springmvc.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Entity
 public class Jedi {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotBlank(message = "Name cannot be blank")
-    @Size(min = 3, max = 20, message = "Name must have between 3 and 20 letters")
+    @NotBlank(message = "Nome deve ser preenchido.")
+    @Size(min = 3, max = 20, message = "Nome deve ter entre 3 e 20 caracteres.")
     private String name;
     
-    @NotBlank(message = "Name cannot be blank")
-    @Size(max = 20, message = "Last Name must not have more than 20 letters")
+    @NotBlank(message = "Sobrenome deve ser preenchido.")
+    @Size(max = 20, message = "Sobrenome não deve ter mais de 20 caracteres.")
     private String lastName;
 
     public Jedi (final String name, final String lastName) {
@@ -37,5 +45,13 @@ public class Jedi {
     public void setLastName (final String lastName) {
         this.lastName = lastName;
     }
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }
