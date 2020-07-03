@@ -7,14 +7,15 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.globallabs.springmvc.exception.JediNotFoundException;
 import br.com.globallabs.springmvc.model.Jedi;
 import br.com.globallabs.springmvc.service.JediService;
 
@@ -23,43 +24,33 @@ public class JediResource {
 
 	@Autowired
 	private JediService jediService;
-	
+
 	@GetMapping("/api/jedi")
-	public List<Jedi> getAllJedi(){
+	public List<Jedi> getAllJedi() {
 		return jediService.findAll();
 	}
-	
+
 	@GetMapping("/api/jedi/{id}")
-	public ResponseEntity<Jedi> getJedi(@PathVariable("id") Long id){
-		try {
-			Jedi jedi = jediService.findById(id);
-			return ResponseEntity.ok(jedi);
-		} catch (JediNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<Jedi> getJedi(@PathVariable("id") Long id) {
+		Jedi jedi = jediService.findById(id);
+		return ResponseEntity.ok(jedi);
 	}
-	
+
 	@PostMapping("/api/jedi")
-	public ResponseEntity<?> createJedi(@Valid @RequestBody Jedi jedi) {
-		
-		try {
-			jedi = jediService.save(jedi);
-			return ResponseEntity.status(HttpStatus.CREATED).body(jedi);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+	@ResponseStatus(HttpStatus.CREATED)
+	public Jedi createJedi(@Valid @RequestBody Jedi jedi) {
+		return jediService.save(jedi);
 	}
-	
+
 	@PutMapping("/api/jedi/{id}")
-	public ResponseEntity<Jedi> updateJedi(@PathVariable("id") Long id,
-			@Valid @RequestBody Jedi novoJedi){
-		
-		try {
-			Jedi jediAtualizado = jediService.updateJedi(id, novoJedi);
-			return ResponseEntity.ok(jediAtualizado);
-		} catch (JediNotFoundException e) {
-			return ResponseEntity.notFound().build();
-		}
-		
+	public ResponseEntity<Jedi> updateJedi(@PathVariable("id") Long id, @Valid @RequestBody Jedi novoJedi) {
+		Jedi jediAtualizado = jediService.updateJedi(id, novoJedi);
+		return ResponseEntity.ok(jediAtualizado);
+	}
+
+	@DeleteMapping("/api/jedi/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteJedi(@PathVariable("id") Long id) {
+		jediService.delete(id);
 	}
 }
